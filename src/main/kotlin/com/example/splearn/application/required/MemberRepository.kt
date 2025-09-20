@@ -1,7 +1,6 @@
 package com.example.splearn.application.required
 
 import com.example.splearn.domain.Member
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.Repository
 
 /**

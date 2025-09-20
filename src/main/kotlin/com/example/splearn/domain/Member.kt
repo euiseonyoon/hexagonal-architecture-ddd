@@ -1,22 +1,29 @@
 package com.example.splearn.domain
 
-class Member private constructor() {
+import jakarta.persistence.*
+import org.hibernate.annotations.NaturalId
 
+@Entity
+class Member protected constructor() {
+    @Id
+    @GeneratedValue
+    val id: Long = 0L
+
+    @Embedded
+    @NaturalId
     lateinit var email: Email
-        get
-        private set
+        internal set
 
+    // change to internal : JPA requires a way to set the value of this property
     lateinit var nickName: String
-        get
-        private set
+        internal set
 
     lateinit var passwordHash: String
-        get
-        private set
+        internal set
 
+    @Enumerated(value = EnumType.STRING)
     lateinit var status: MemberStatus
-        get
-        private set
+        internal set
 
     fun isActive(): Boolean = this.status == MemberStatus.ACTIVE
 

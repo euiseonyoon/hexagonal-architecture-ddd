@@ -1,5 +1,8 @@
 package com.example.splearn.domain
 
+import com.example.splearn.domain.MemberFixture.Companion.DEFAULT_PASSWORD
+import com.example.splearn.domain.MemberFixture.Companion.createMemberResiterRequest
+import com.example.splearn.domain.MemberFixture.Companion.createPasswordEncoder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -12,28 +15,16 @@ class MemberTest {
     lateinit var member: Member
     lateinit var passwordEncoder: PasswordEncoder
 
-    val defaultPassword = "password"
-
     @BeforeEach
     fun setup() {
-        passwordEncoder = object : PasswordEncoder {
-            override fun encode(password: String): String {
-                return password.uppercase()
-            }
-
-            override fun matches(password: String, passwordHash: String): Boolean {
-                return passwordHash == this.encode(password)
-            }
-        }
+        passwordEncoder = createPasswordEncoder()
         member = Member.register(
-            MemberRegisterRequest(
-                Email("test@gmail.com"),
-                "Adam",
-                defaultPassword,
-            ),
+            createMemberResiterRequest(),
             passwordEncoder
         )
     }
+
+
 
     @Test
     fun registerMember() {
@@ -68,7 +59,7 @@ class MemberTest {
 
     @Test
     fun verifyPassword() {
-        assertTrue { member.verifyPassword(defaultPassword, passwordEncoder) }
+        assertTrue { member.verifyPassword(DEFAULT_PASSWORD, passwordEncoder) }
 
         assertFalse { member.verifyPassword("invalid password", passwordEncoder) }
     }

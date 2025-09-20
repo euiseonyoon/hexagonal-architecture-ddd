@@ -1,5 +1,8 @@
 package com.example.splearn.domain
 
+import jakarta.persistence.Embeddable
+
+@Embeddable
 data class Email(
     val address: String
 ) {
