@@ -10,6 +10,7 @@ import com.example.splearn.domain.MemberStatus
 import jakarta.transaction.Transactional
 import jakarta.validation.ConstraintViolationException
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -102,10 +103,17 @@ class MemberRegisterTest(
         val member = memberRegister.register(MemberFixture.createMemberResiterRequest())
 
         // WHEN
-        member.activate()
+        memberRegister.activate(member.id)
 
         // THEN
         assertEquals(MemberStatus.ACTIVE, member.status)
+
+        // WHEN & THEN
+        val result = assertThrows<IllegalArgumentException> {
+            memberRegister.activate(member.id)
+        }
+        assertNotNull(result.message)
+        assertEquals("Pending 상태가 아닙니다.", result.message!!)
     }
 }
 
