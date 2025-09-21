@@ -1,6 +1,6 @@
 package com.example.splearn.application
 
-import com.example.splearn.application.provided.MemberResister
+import com.example.splearn.application.provided.MemberRegister
 import com.example.splearn.application.required.EmailSender
 import com.example.splearn.application.required.MemberRepository
 import com.example.splearn.domain.Email
@@ -20,7 +20,7 @@ import org.mockito.kotlin.verify
 class MemberRegisterTest {
     @Test
     fun registerTestStub() {
-        val register: MemberResister = MemberService(
+        val register: MemberRegister = MemberService(
             memberRepository = MemberRepositoryStub(),
             passwordEncoder =  MemberFixture.createPasswordEncoder(),
             emailSender = EmailSenderStub()
@@ -37,7 +37,7 @@ class MemberRegisterTest {
     fun registerTestMock() {
         val emailSenderMock: EmailSender = Mockito.mock(EmailSender::class.java)
 
-        val register: MemberResister = MemberService(
+        val register: MemberRegister = MemberService(
             memberRepository = MemberRepositoryStub(),
             passwordEncoder =  MemberFixture.createPasswordEncoder(),
             emailSender = emailSenderMock

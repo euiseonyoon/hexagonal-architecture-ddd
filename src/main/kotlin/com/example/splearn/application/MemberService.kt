@@ -1,6 +1,6 @@
 package com.example.splearn.application
 
-import com.example.splearn.application.provided.MemberResister
+import com.example.splearn.application.provided.MemberRegister
 import com.example.splearn.application.required.EmailSender
 import com.example.splearn.application.required.MemberRepository
 import com.example.splearn.domain.Member
@@ -17,7 +17,7 @@ class MemberService(
     private val memberRepository: MemberRepository,
     private val passwordEncoder: PasswordEncoder,
     private val emailSender: EmailSender,
-) : MemberResister {
+) : MemberRegister {
 
     override fun register(registerRequest: MemberRegisterRequest): Member {
         // validation
