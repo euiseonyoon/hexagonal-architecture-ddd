@@ -6,7 +6,7 @@ class MemberFixture {
 
         @JvmStatic
         fun createMemberResiterRequest() = MemberRegisterRequest(
-            Email("test@gmail.com"),
+            "test@gmail.com",
             "Adam",
             DEFAULT_PASSWORD,
         )

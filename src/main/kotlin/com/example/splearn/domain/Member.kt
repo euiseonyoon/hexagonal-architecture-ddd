@@ -57,7 +57,7 @@ class Member protected constructor() {
         @JvmStatic
         fun register(registerRequest: MemberRegisterRequest, passwordEncoder: PasswordEncoder): Member {
             val member = Member()
-            member.email = registerRequest.email
+            member.email = Email(registerRequest.email)
             member.nickName = registerRequest.nickname
             member.passwordHash = passwordEncoder.encode(registerRequest.password)
             member.status = MemberStatus.PENDING

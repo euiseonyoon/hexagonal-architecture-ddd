@@ -20,7 +20,7 @@ class MemberService(
 
     @Transactional
     override fun register(registerRequest: MemberRegisterRequest): Member {
-        checkDuplicateEmail(registerRequest.email)
+        checkDuplicateEmail(Email(registerRequest.email))
 
         val member = Member.register(registerRequest, passwordEncoder)
 
