@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated
  * */
 @Service
 @Validated
-class MemberService(
+class MemberModifyService(
     private val memberRepository: MemberRepository,
     private val passwordEncoder: PasswordEncoder,
     private val emailSender: EmailSender,
