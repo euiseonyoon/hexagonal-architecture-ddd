@@ -1,5 +1,6 @@
 package com.example.splearn.application
 
+import com.example.splearn.application.provided.MemberFinder
 import com.example.splearn.application.provided.MemberRegister
 import com.example.splearn.application.required.EmailSender
 import com.example.splearn.application.required.MemberRepository
@@ -19,6 +20,7 @@ class MemberService(
     private val memberRepository: MemberRepository,
     private val passwordEncoder: PasswordEncoder,
     private val emailSender: EmailSender,
+    private val memberFinder: MemberFinder,
 ) : MemberRegister {
 
     @Transactional
@@ -32,6 +34,12 @@ class MemberService(
         emailSender.send(member.email, "가입 신청완료", "가입이 신청이 완료되었습니다.")
 
         return member
+    }
+
+    override fun activate(memberId: Long): Member {
+        val member = memberFinder.find(memberId)
+        member.activate()
+        return memberRepository.save(member)
     }
 
     private fun checkDuplicateEmail(email: Email) {

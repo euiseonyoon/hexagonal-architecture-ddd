@@ -95,5 +95,17 @@ class MemberRegisterTest(
             ))
         }
     }
+
+    @Test
+    fun activate() {
+        // GIVEN
+        val member = memberRegister.register(MemberFixture.createMemberResiterRequest())
+
+        // WHEN
+        member.activate()
+
+        // THEN
+        assertEquals(MemberStatus.ACTIVE, member.status)
+    }
 }
 
