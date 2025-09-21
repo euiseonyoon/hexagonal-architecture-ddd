@@ -3,9 +3,8 @@ package com.example.splearn.application
 import com.example.splearn.application.provided.MemberRegister
 import com.example.splearn.application.required.EmailSender
 import com.example.splearn.application.required.MemberRepository
-import com.example.splearn.domain.Member
-import com.example.splearn.domain.MemberRegisterRequest
-import com.example.splearn.domain.PasswordEncoder
+import com.example.splearn.domain.*
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 /**
@@ -19,8 +18,9 @@ class MemberService(
     private val emailSender: EmailSender,
 ) : MemberRegister {
 
+    @Transactional
     override fun register(registerRequest: MemberRegisterRequest): Member {
-        // validation
+        checkDuplicateEmail(registerRequest.email)
 
         val member = Member.register(registerRequest, passwordEncoder)
 
@@ -29,5 +29,11 @@ class MemberService(
         emailSender.send(member.email, "가입 신청완료", "가입이 신청이 완료되었습니다.")
 
         return member
+    }
+
+    private fun checkDuplicateEmail(email: Email) {
+        if (memberRepository.findByEmail(email) != null) {
+            throw DuplicateEmailException("이미 사용중인 이메일입니다. email={$email.address}")
+        }
     }
 }
