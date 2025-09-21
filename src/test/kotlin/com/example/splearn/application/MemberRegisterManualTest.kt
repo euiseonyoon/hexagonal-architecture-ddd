@@ -17,7 +17,7 @@ import kotlin.test.assertNotEquals
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 
-class MemberRegisterTest {
+class MemberRegisterManualTest {
     @Test
     fun registerTestStub() {
         val register: MemberRegister = MemberService(
