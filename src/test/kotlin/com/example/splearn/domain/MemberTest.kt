@@ -27,8 +27,6 @@ class MemberTest {
         )
     }
 
-
-
     @Test
     fun registerMember() {
         assertEquals(MemberStatus.PENDING, member.status)

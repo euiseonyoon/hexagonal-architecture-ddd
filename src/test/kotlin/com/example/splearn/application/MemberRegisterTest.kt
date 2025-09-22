@@ -45,20 +45,20 @@ class MemberRegisterTest(
         assertThrows<ConstraintViolationException> {
             memberRegister.register(
                 MemberRegisterRequest(
-                email = "test@gmail.com",
-                nickname = "Tony",
-                password = generateRandomString(1)
-            )
+                    email = "test@gmail.com",
+                    nickname = "Tony",
+                    password = generateRandomString(1)
+                )
             )
         }
 
         assertThrows<ConstraintViolationException> {
             memberRegister.register(
                 MemberRegisterRequest(
-                email = "test@gmail.com",
-                nickname = "Tony",
-                password = generateRandomString(25)
-            )
+                    email = "test@gmail.com",
+                    nickname = "Tony",
+                    password = generateRandomString(25)
+                )
             )
         }
     }
@@ -68,20 +68,20 @@ class MemberRegisterTest(
         assertThrows<ConstraintViolationException> {
             memberRegister.register(
                 MemberRegisterRequest(
-                email = "test@gmail.com",
-                nickname = generateRandomString(1),
-                password = "12345"
-            )
+                    email = "test@gmail.com",
+                    nickname = generateRandomString(1),
+                    password = "12345"
+                )
             )
         }
 
         assertThrows<ConstraintViolationException> {
             memberRegister.register(
                 MemberRegisterRequest(
-                email = "test@gmail.com",
-                nickname = generateRandomString(25),
-                password = "12345"
-            )
+                    email = "test@gmail.com",
+                    nickname = generateRandomString(25),
+                    password = "12345"
+                )
             )
         }
     }
@@ -91,20 +91,20 @@ class MemberRegisterTest(
         assertThrows<ConstraintViolationException> {
             memberRegister.register(
                 MemberRegisterRequest(
-                email = "test",
-                nickname = "Adam",
-                password = "12345"
-            )
+                    email = "test",
+                    nickname = "Adam",
+                    password = "12345"
+                )
             )
         }
 
         assertThrows<ConstraintViolationException> {
             memberRegister.register(
                 MemberRegisterRequest(
-                email = "test@",
-                nickname = "Adam",
-                password = "12345"
-            )
+                    email = "test@",
+                    nickname = "Adam",
+                    password = "12345"
+                )
             )
         }
     }
