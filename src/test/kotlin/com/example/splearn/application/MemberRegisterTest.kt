@@ -9,10 +9,7 @@ import com.example.splearn.domain.member.*
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import jakarta.validation.ConstraintViolationException
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertNotNull
-import org.junit.jupiter.api.assertNull
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import kotlin.test.assertEquals
@@ -281,5 +278,41 @@ class MemberRegisterTest(
             "이미 존재하는 프로필 주소입니다. profile_address : {$duplicateProfileAddress}",
             exception.message
         )
+
+        // WHEN & THEN : 회원이 본인이 원래 가지고 있던 profile_address를 그대로 사용하여 수정하는 경우
+        assertDoesNotThrow {
+            memberRegister.updateInfo(
+                member.id!!,
+                MemberInfoUpdateRequest(
+                    "NewNickname",
+                    duplicateProfileAddress,
+                    "hello there"
+                )
+            )
+        }
+
+        // WHEN & THEN : 비어있는 profile 이름으로 수정 (profile address 수정되지 않음)
+        assertDoesNotThrow {
+            memberRegister.updateInfo(
+                member.id!!,
+                MemberInfoUpdateRequest(
+                    "NewNickname",
+                    "",
+                    "hello there"
+                )
+            )
+        }
+
+        // WHEN & THEN : null인 profile 이름으로 수정 (profile address 수정되지 않음)
+        assertDoesNotThrow {
+            memberRegister.updateInfo(
+                member.id!!,
+                MemberInfoUpdateRequest(
+                    "NewNickname",
+                    null,
+                    "hello there"
+                )
+            )
+        }
     }
 }
