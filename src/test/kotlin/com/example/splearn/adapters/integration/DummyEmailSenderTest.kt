@@ -14,7 +14,7 @@ class DummyEmailSenderTest {
 
         val emailAddress = "test@gmail.com"
         emailSender.send(
-            email = Email(emailAddress),
+            email = Email.create(emailAddress),
             title = "title",
             content = "content"
         )

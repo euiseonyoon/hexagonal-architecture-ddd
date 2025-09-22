@@ -52,7 +52,7 @@ class Member protected constructor() : AbstractEntity() {
         @JvmStatic
         fun register(registerRequest: MemberRegisterRequest, passwordEncoder: PasswordEncoder): Member {
             val member = Member()
-            member.email = Email(registerRequest.email)
+            member.email = Email.create(registerRequest.email)
             member.nickname = registerRequest.nickname
             member.passwordHash = passwordEncoder.encode(registerRequest.password)
             member.status = MemberStatus.PENDING

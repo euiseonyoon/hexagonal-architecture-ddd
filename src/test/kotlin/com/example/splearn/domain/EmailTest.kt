@@ -12,7 +12,7 @@ class EmailTest {
         val validEmail = "hello@gmail.com"
 
         // WHEN & THEN
-        assertDoesNotThrow { Email(validEmail) }
+        assertDoesNotThrow { Email.create(validEmail) }
     }
 
     @Test
@@ -27,7 +27,7 @@ class EmailTest {
 
         validEmails.map {
             // WHEN & THEN
-            assertThrows<Exception> { Email(it) }
+            assertThrows<Exception> { Email.create(it) }
         }
     }
 }

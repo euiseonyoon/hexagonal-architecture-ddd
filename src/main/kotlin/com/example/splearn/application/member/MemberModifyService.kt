@@ -29,7 +29,7 @@ class MemberModifyService(
 
     @Transactional
     override fun register(@Valid registerRequest: MemberRegisterRequest): Member {
-        checkDuplicateEmail(Email(registerRequest.email))
+        checkDuplicateEmail(Email.create(registerRequest.email))
 
         val member = Member.register(registerRequest, passwordEncoder)
 
