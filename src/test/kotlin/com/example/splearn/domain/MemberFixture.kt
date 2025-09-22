@@ -1,5 +1,6 @@
 package com.example.splearn.domain
 
+import com.example.splearn.domain.member.MemberInfoUpdateRequest
 import com.example.splearn.domain.member.MemberRegisterRequest
 import com.example.splearn.domain.member.PasswordEncoder
 
@@ -24,5 +25,12 @@ class MemberFixture {
                 return passwordHash == this.encode(password)
             }
         }
+
+        @JvmStatic
+        fun createMemberInfoUpdateRequest(profileAddress: String?) = MemberInfoUpdateRequest(
+            "Smith",
+            profileAddress,
+            "this is introduction."
+        )
     }
 }

@@ -5,6 +5,7 @@ import com.example.splearn.application.member.provided.MemberRegister
 import com.example.splearn.application.required.SplearnTestConfig
 import com.example.splearn.domain.MemberFixture
 import com.example.splearn.domain.MemberFixture.Companion.DEFAULT_PASSWORD
+import com.example.splearn.domain.MemberFixture.Companion.createMemberInfoUpdateRequest
 import com.example.splearn.domain.member.*
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
@@ -18,6 +19,7 @@ import kotlin.test.assertNotEquals
 @SpringBootTest
 @Transactional
 @Import(SplearnTestConfig::class)
+// 아래 코드를 사용해도 되지만, junit-platform.properties에 설정해두었음.
 // @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class MemberRegisterTest(
     private val memberRegister: MemberRegister,
@@ -27,7 +29,7 @@ class MemberRegisterTest(
     fun register() {
         val member = memberRegister.register(MemberFixture.createMemberRegisterRequest())
 
-        assertNotEquals(0L, member.id)
+        assertNotNull(member.id)
         assertEquals(MemberStatus.PENDING, member.status)
         assertNotNull(member.detail)
     }
@@ -143,11 +145,9 @@ class MemberRegisterTest(
         assertNotNull(member.detail.activatedAt)
 
         // WHEN & THEN
-        val result = assertThrows<IllegalArgumentException> {
+        assertThrows<IllegalArgumentException> {
             memberRegister.activate(member.id!!)
-        }
-        assertNotNull(result.message)
-        assertEquals("Pending 상태가 아닙니다.", result.message!!)
+        }.also { assertEquals("Pending 상태가 아닙니다.", it.message) }
     }
 
     @Test
@@ -176,143 +176,78 @@ class MemberRegisterTest(
         entityManager.clear()
 
         // WHEN & THEN
-        val exception = assertThrows<IllegalArgumentException> {
+        assertThrows<IllegalArgumentException> {
             memberRegister.deactivate(member.id!!)
-        }
-        assertEquals("Active 상태가 아닙니다.", exception.message!!)
+        }.also { assertEquals("Active 상태가 아닙니다.", it.message!!) }
     }
 
     @Test
     fun updateInfo() {
         // GIVEN
-        val newNickname = "Smith"
         val newProfileAddress = "address123"
-        val newIntroduction = "hello there"
-
-        val member = registerMember()
-        assertNotNull(member.id)
-        memberRegister.activate(member.id!!)
+        val member = registerMember().also { memberRegister.activate(it.id!!) }
 
         entityManager.flush()
         entityManager.clear()
 
         // WHEN
-        val updatedMember = memberRegister.updateInfo(
-            member.id!!,
-            MemberInfoUpdateRequest(
-                newNickname,
-                newProfileAddress,
-                newIntroduction
-            )
-        )
+        val updateRequest = createMemberInfoUpdateRequest(newProfileAddress)
+        val updatedMember = memberRegister.updateInfo(member.id!!, updateRequest)
 
         // THEN
-        assertEquals(newNickname, updatedMember.nickname)
-        assertEquals(newProfileAddress, updatedMember.detail.profile?.address)
-        assertEquals(newIntroduction, updatedMember.detail.introduction)
+        assertEquals(updateRequest.nickname, updatedMember.nickname)
+        assertEquals(updateRequest.profileAddress, updatedMember.detail.profile?.address)
+        assertEquals(updateRequest.introduction, updatedMember.detail.introduction)
     }
 
     @Test
     fun `updateInfoFail Not Active`() {
         // GIVEN
-        val newNickname = "Smith"
-        val newProfileAddress = "address123"
-        val newIntroduction = "hello there"
-
         val member = registerMember()
         assertNotNull(member.id)
+
         entityManager.flush()
         entityManager.clear()
 
         // WHEN & THEN
-        val exception = assertThrows<IllegalArgumentException> {
-            memberRegister.updateInfo(
-                member.id!!,
-                MemberInfoUpdateRequest(
-                    newNickname,
-                    newProfileAddress,
-                    newIntroduction
-                )
-            )
-        }
-        assertEquals("Active 상태가 아닙니다.", exception.message)
+        assertThrows<IllegalArgumentException> {
+            memberRegister.updateInfo(member.id!!, createMemberInfoUpdateRequest("newprofile"))
+        }.also { assertEquals("Active 상태가 아닙니다.", it.message) }
     }
 
     @Test
     fun `updateInfoFail Duplicate profile address`() {
         // GIVEN
-        val newNickname = "Smith"
         val duplicateProfileAddress = "address123"
-        val newIntroduction = "hello there"
 
-        val member = registerMember()
-        val member2 = registerMember("blake@gmail.com")
+        val member = registerMember().also { memberRegister.activate(it.id!!) }
+        val member2 = registerMember("blake@gmail.com").also { memberRegister.activate(it.id!!) }
 
-        memberRegister.activate(member.id!!)
-        memberRegister.activate(member2.id!!)
+        memberRegister.updateInfo(member.id!!, createMemberInfoUpdateRequest(duplicateProfileAddress))
 
         entityManager.flush()
         entityManager.clear()
 
-        memberRegister.updateInfo(
-            member.id!!,
-            MemberInfoUpdateRequest(
-                newNickname,
-                duplicateProfileAddress,
-                newIntroduction
-            )
-        )
-
         // WHEN & THEN
-        val exception = assertThrows<DuplicateProfileAddressException> {
-            memberRegister.updateInfo(
-                member2.id!!,
-                MemberInfoUpdateRequest(
-                    "NewNickname",
-                    duplicateProfileAddress,
-                    "hello there"
-                )
-            )
+        assertThrows<DuplicateProfileAddressException> {
+            memberRegister.updateInfo(member2.id!!, createMemberInfoUpdateRequest(duplicateProfileAddress))
+        }.also {
+            assertEquals("이미 존재하는 프로필 주소입니다. profile_address : {$duplicateProfileAddress}", it.message)
         }
-        assertEquals(
-            "이미 존재하는 프로필 주소입니다. profile_address : {$duplicateProfileAddress}",
-            exception.message
-        )
 
         // WHEN & THEN : 회원이 본인이 원래 가지고 있던 profile_address를 그대로 사용하여 수정하는 경우
         assertDoesNotThrow {
-            memberRegister.updateInfo(
-                member.id!!,
-                MemberInfoUpdateRequest(
-                    "NewNickname",
-                    duplicateProfileAddress,
-                    "hello there"
-                )
-            )
+            memberRegister.updateInfo(member.id!!, createMemberInfoUpdateRequest(duplicateProfileAddress))
         }
 
         // WHEN & THEN : 비어있는 profile 이름으로 수정 (profile address 수정되지 않음)
         assertDoesNotThrow {
-            memberRegister.updateInfo(
-                member.id!!,
-                MemberInfoUpdateRequest(
-                    "NewNickname",
-                    "",
-                    "hello there"
-                )
-            )
+            memberRegister.updateInfo(member.id!!, createMemberInfoUpdateRequest(""))
         }
 
         // WHEN & THEN : null인 profile 이름으로 수정 (profile address 수정되지 않음)
         assertDoesNotThrow {
-            memberRegister.updateInfo(
-                member.id!!,
-                MemberInfoUpdateRequest(
-                    "NewNickname",
-                    null,
-                    "hello there"
-                )
-            )
+            memberRegister.updateInfo(member.id!!, createMemberInfoUpdateRequest(null))
         }
     }
 }
