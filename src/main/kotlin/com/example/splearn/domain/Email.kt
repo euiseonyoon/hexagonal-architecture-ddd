@@ -1,9 +1,11 @@
 package com.example.splearn.domain
 
+import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
 @Embeddable
 data class Email(
+    @Column(name = "email_address", length = 150, nullable = false)
     val address: String
 ) {
     init {
