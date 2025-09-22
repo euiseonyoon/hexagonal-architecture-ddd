@@ -9,7 +9,7 @@ import org.hibernate.proxy.HibernateProxy
 abstract class AbstractEntity {
     @Id
     @GeneratedValue
-    val id: Long = 0L
+    val id: Long? = null
 
     override fun equals(o: Any?): Boolean {
         if (this === o) return true

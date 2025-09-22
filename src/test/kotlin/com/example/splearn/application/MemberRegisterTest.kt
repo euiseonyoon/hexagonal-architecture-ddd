@@ -113,16 +113,17 @@ class MemberRegisterTest(
     fun activate() {
         // GIVEN
         val member = memberRegister.register(MemberFixture.createMemberResiterRequest())
+        assertNotNull(member.id)
 
         // WHEN
-        memberRegister.activate(member.id)
+        memberRegister.activate(member.id!!)
 
         // THEN
         assertEquals(MemberStatus.ACTIVE, member.status)
 
         // WHEN & THEN
         val result = assertThrows<IllegalArgumentException> {
-            memberRegister.activate(member.id)
+            memberRegister.activate(member.id!!)
         }
         assertNotNull(result.message)
         assertEquals("Pending 상태가 아닙니다.", result.message!!)

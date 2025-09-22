@@ -10,6 +10,7 @@ import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -36,7 +37,8 @@ class MemberFinderTest(
         entityManager.clear()
 
         // WHEN
-        val found = memberFinder.find(member.id)
+        assertNotNull(member.id)
+        val found = memberFinder.find(member.id!!)
 
         // THEN
         assertEquals(member.id, found.id)
