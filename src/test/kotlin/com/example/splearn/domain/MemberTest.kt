@@ -4,12 +4,12 @@ import com.example.splearn.domain.MemberFixture.Companion.DEFAULT_PASSWORD
 import com.example.splearn.domain.MemberFixture.Companion.createMemberResiterRequest
 import com.example.splearn.domain.MemberFixture.Companion.createPasswordEncoder
 import com.example.splearn.domain.member.Member
+import com.example.splearn.domain.member.MemberInfoUpdateRequest
 import com.example.splearn.domain.member.MemberStatus
 import com.example.splearn.domain.member.PasswordEncoder
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -39,6 +39,7 @@ class MemberTest {
 
         // THEN
         assertTrue { member.isActive() }
+        assertNotNull { member.detail.activatedAt }
     }
 
     @Test
@@ -51,6 +52,7 @@ class MemberTest {
 
         // THEN
         assertEquals(MemberStatus.DEACTIVATED, member.status)
+        assertNotNull { member.detail.deactivatedAt }
     }
 
     @Test
@@ -78,15 +80,31 @@ class MemberTest {
         assertEquals(passwordEncoder.encode(newPassword), member.passwordHash)
     }
 
-    @Test
-    fun changeNickname() {
+    @ParameterizedTest
+    @CsvSource(
+        "foo, null, null",
+        "foo, null, 'hello there'",
+        "foo, '123456', null",
+        "foo, '123456', 'hello there'"
+    )
+    fun updateInfo(
+        newNickname: String,
+        profileAddress: String?,
+        introduction: String?
+    ) {
         // GIVEN
-        val newNickname = "foo"
+        val memberInfoUpdateRequest = MemberInfoUpdateRequest(
+            nickname = newNickname,
+            profileAddress = profileAddress,
+            introduction = introduction,
+        )
 
         // WHEN
-        member.changeNickname(newNickname)
+        member.updateInfo(memberInfoUpdateRequest)
 
         // THEN
         assertEquals(newNickname, member.nickname)
+        assertEquals(profileAddress, member.detail.profile?.address)
+        assertEquals(introduction, member.detail.introduction)
     }
 }

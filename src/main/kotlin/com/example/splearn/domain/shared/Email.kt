@@ -4,7 +4,7 @@ import java.util.regex.Pattern
 
 class Email private constructor() {
     lateinit var address: String
-        private set
+        protected set
 
     companion object {
         private val EMAIL_PATTERN: Pattern =

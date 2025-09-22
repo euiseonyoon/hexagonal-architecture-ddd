@@ -5,12 +5,15 @@ import com.example.splearn.application.member.provided.MemberRegister
 import com.example.splearn.application.required.SplearnTestConfig
 import com.example.splearn.domain.member.DuplicateEmailException
 import com.example.splearn.domain.MemberFixture
+import com.example.splearn.domain.member.Member
 import com.example.splearn.domain.member.MemberRegisterRequest
 import com.example.splearn.domain.member.MemberStatus
+import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import jakarta.validation.ConstraintViolationException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
+import org.junit.jupiter.api.assertNull
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -22,7 +25,8 @@ import kotlin.test.assertNotEquals
 @Import(SplearnTestConfig::class)
 // @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class MemberRegisterTest(
-    private val memberRegister: MemberRegister
+    private val memberRegister: MemberRegister,
+    private val entityManager: EntityManager,
 ) {
     @Test
     fun register() {
@@ -30,6 +34,7 @@ class MemberRegisterTest(
 
         assertNotEquals(0L, member.id)
         assertEquals(MemberStatus.PENDING, member.status)
+        assertNotNull(member.detail)
     }
 
     @Test
@@ -109,17 +114,26 @@ class MemberRegisterTest(
         }
     }
 
+    private fun registerMember(): Member {
+        val member = memberRegister.register(MemberFixture.createMemberResiterRequest())
+        entityManager.flush()
+        return member
+    }
+
     @Test
     fun activate() {
         // GIVEN
-        val member = memberRegister.register(MemberFixture.createMemberResiterRequest())
+        val member = registerMember()
         assertNotNull(member.id)
+        assertNull(member.detail.activatedAt)
 
         // WHEN
         memberRegister.activate(member.id!!)
+        entityManager.flush()
 
         // THEN
         assertEquals(MemberStatus.ACTIVE, member.status)
+        assertNotNull(member.detail.activatedAt)
 
         // WHEN & THEN
         val result = assertThrows<IllegalArgumentException> {

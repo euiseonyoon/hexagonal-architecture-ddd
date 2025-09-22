@@ -20,6 +20,10 @@ class Member protected constructor() : AbstractEntity() {
     lateinit var status: MemberStatus
         protected set
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    lateinit var detail: MemberDetail
+        protected set
+
     fun isActive(): Boolean = this.status == MemberStatus.ACTIVE
 
     fun activate() {
@@ -27,6 +31,7 @@ class Member protected constructor() : AbstractEntity() {
             "Pending 상태가 아닙니다."
         }
         this.status = MemberStatus.ACTIVE
+        this.detail.activate()
     }
 
     fun deactivate() {
@@ -34,14 +39,16 @@ class Member protected constructor() : AbstractEntity() {
             "Active 상태가 아닙니다."
         }
         this.status = MemberStatus.DEACTIVATED
+        detail.deactivate()
     }
 
     fun verifyPassword(password: String, passwordEncoder: PasswordEncoder): Boolean {
         return passwordEncoder.matches(password, passwordHash)
     }
 
-    fun changeNickname(nickname: String) {
-        this.nickname = nickname
+    fun updateInfo(updateRequest: MemberInfoUpdateRequest) {
+        updateRequest.nickname?.let { this.nickname = it }
+        this.detail.setProfileInfo(updateRequest.profileAddress, updateRequest.introduction)
     }
 
     fun changePassword(password: String, passwordEncoder: PasswordEncoder) {
@@ -56,6 +63,8 @@ class Member protected constructor() : AbstractEntity() {
             member.nickname = registerRequest.nickname
             member.passwordHash = passwordEncoder.encode(registerRequest.password)
             member.status = MemberStatus.PENDING
+
+            member.detail = MemberDetail.create()
 
             return member
         }

@@ -43,7 +43,8 @@ class MemberModifyService(
     override fun activate(memberId: Long): Member {
         val member = memberFinder.find(memberId)
         member.activate()
-        return memberRepository.save(member)
+        val result = memberRepository.save(member)
+        return result
     }
 
     private fun checkDuplicateEmail(email: Email) {
