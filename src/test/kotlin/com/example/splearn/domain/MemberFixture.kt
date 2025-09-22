@@ -8,7 +8,7 @@ class MemberFixture {
         const val DEFAULT_PASSWORD = "secret"
 
         @JvmStatic
-        fun createMemberResiterRequest() = MemberRegisterRequest(
+        fun createMemberRegisterRequest() = MemberRegisterRequest(
             "test@gmail.com",
             "Adam",
             DEFAULT_PASSWORD,

@@ -28,7 +28,7 @@ class MemberFinderTest(
 
     @BeforeEach
     fun setup() {
-        member = memberRegister.register(MemberFixture.createMemberResiterRequest())
+        member = memberRegister.register(MemberFixture.createMemberRegisterRequest())
         entityManager.flush()
     }
 

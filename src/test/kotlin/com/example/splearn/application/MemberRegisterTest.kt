@@ -25,7 +25,7 @@ class MemberRegisterTest(
 ) {
     @Test
     fun register() {
-        val member = memberRegister.register(MemberFixture.createMemberResiterRequest())
+        val member = memberRegister.register(MemberFixture.createMemberRegisterRequest())
 
         assertNotEquals(0L, member.id)
         assertEquals(MemberStatus.PENDING, member.status)
@@ -34,9 +34,9 @@ class MemberRegisterTest(
 
     @Test
     fun duplicateEmail() {
-        memberRegister.register(MemberFixture.createMemberResiterRequest())
+        memberRegister.register(MemberFixture.createMemberRegisterRequest())
         assertThrows<DuplicateEmailException> {
-            memberRegister.register(MemberFixture.createMemberResiterRequest())
+            memberRegister.register(MemberFixture.createMemberRegisterRequest())
         }
     }
 
@@ -110,7 +110,7 @@ class MemberRegisterTest(
     }
 
     private fun registerMember(): Member {
-        val member = memberRegister.register(MemberFixture.createMemberResiterRequest())
+        val member = memberRegister.register(MemberFixture.createMemberRegisterRequest())
         entityManager.flush()
         return member
     }

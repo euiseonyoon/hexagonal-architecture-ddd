@@ -1,7 +1,7 @@
 package com.example.splearn.domain
 
 import com.example.splearn.domain.MemberFixture.Companion.DEFAULT_PASSWORD
-import com.example.splearn.domain.MemberFixture.Companion.createMemberResiterRequest
+import com.example.splearn.domain.MemberFixture.Companion.createMemberRegisterRequest
 import com.example.splearn.domain.MemberFixture.Companion.createPasswordEncoder
 import com.example.splearn.domain.member.Member
 import com.example.splearn.domain.member.MemberInfoUpdateRequest
@@ -22,7 +22,7 @@ class MemberTest {
     fun setup() {
         passwordEncoder = createPasswordEncoder()
         member = Member.register(
-            createMemberResiterRequest(),
+            createMemberRegisterRequest(),
             passwordEncoder
         )
     }

@@ -2,7 +2,7 @@ package com.example.splearn.application.required
 
 import com.example.splearn.application.member.required.MemberRepository
 import com.example.splearn.domain.member.Member
-import com.example.splearn.domain.MemberFixture.Companion.createMemberResiterRequest
+import com.example.splearn.domain.MemberFixture.Companion.createMemberRegisterRequest
 import com.example.splearn.domain.MemberFixture.Companion.createPasswordEncoder
 import jakarta.persistence.EntityManager
 import org.junit.jupiter.api.Test
@@ -23,7 +23,7 @@ class MemberRepositoryTest {
     fun createMember() {
         // GIVEN
         val member = Member.register(
-            createMemberResiterRequest(),
+            createMemberRegisterRequest(),
             createPasswordEncoder()
         )
 
@@ -39,7 +39,7 @@ class MemberRepositoryTest {
     fun duplicateEmailFail() {
         // GIVEN
         val member = Member.register(
-            createMemberResiterRequest(),
+            createMemberRegisterRequest(),
             createPasswordEncoder()
         )
         memberRepository.save(member)
@@ -48,7 +48,7 @@ class MemberRepositoryTest {
 
         // WHEN
         val member2 = Member.register(
-            createMemberResiterRequest(),
+            createMemberRegisterRequest(),
             createPasswordEncoder()
         )
 

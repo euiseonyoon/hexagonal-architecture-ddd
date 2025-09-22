@@ -1,7 +1,7 @@
 package com.example.splearn.application.provided
 
 import com.example.splearn.application.member.required.MemberRepository
-import com.example.splearn.domain.MemberFixture.Companion.createMemberResiterRequest
+import com.example.splearn.domain.MemberFixture.Companion.createMemberRegisterRequest
 import com.example.splearn.domain.MemberFixture.Companion.createPasswordEncoder
 import com.example.splearn.domain.member.Member
 import com.example.splearn.domain.member.MemberStatus
@@ -21,7 +21,7 @@ class MemberRepositoryTest(
     @Test
     fun createMember() {
         // GIVEN
-        val member = Member.register(createMemberResiterRequest(), createPasswordEncoder())
+        val member = Member.register(createMemberRegisterRequest(), createPasswordEncoder())
         assertNull(member.id)
 
         // WHEN
