@@ -1,9 +1,7 @@
 package com.example.splearn.domain.member
 
-import jakarta.persistence.Embeddable
 import java.util.regex.Pattern
 
-@Embeddable
 class Profile private constructor() {
     lateinit var address: String
         protected set

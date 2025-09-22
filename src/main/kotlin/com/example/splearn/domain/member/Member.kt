@@ -20,7 +20,6 @@ class Member protected constructor() : AbstractEntity() {
     lateinit var status: MemberStatus
         protected set
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     lateinit var detail: MemberDetail
         protected set
 

@@ -1,13 +1,11 @@
 package com.example.splearn.domain.member
 
 import com.example.splearn.domain.AbstractEntity
-import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import java.time.LocalDateTime
 
 @Entity
 class MemberDetail protected constructor(): AbstractEntity() {
-    @Embedded
     var profile: Profile? = null
         protected set
 
