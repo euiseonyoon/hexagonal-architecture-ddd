@@ -2,6 +2,8 @@ package com.example.splearn.application.member.required
 
 import com.example.splearn.domain.shared.Email
 import com.example.splearn.domain.member.Member
+import com.example.splearn.domain.member.Profile
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.Repository
 
 /**
@@ -13,4 +15,7 @@ interface MemberRepository : Repository<Member, Long> {
     fun findByEmail(email: Email): Member?
 
     fun findById(id: Long): Member?
+
+    @Query("SELECT m FROM Member m WHERE m.detail.profile = :profile")
+    fun findByProfile(profile: Profile): Member?
 }

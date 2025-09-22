@@ -4,6 +4,7 @@ import com.example.splearn.TestUtils.Companion.generateRandomString
 import com.example.splearn.application.member.provided.MemberRegister
 import com.example.splearn.application.required.SplearnTestConfig
 import com.example.splearn.domain.MemberFixture
+import com.example.splearn.domain.MemberFixture.Companion.DEFAULT_PASSWORD
 import com.example.splearn.domain.member.*
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
@@ -117,6 +118,18 @@ class MemberRegisterTest(
         return member
     }
 
+    private fun registerMember(email: String): Member {
+        val member = memberRegister.register(
+            MemberRegisterRequest(
+                email,
+                "Blake",
+                DEFAULT_PASSWORD,
+            )
+        )
+        entityManager.flush()
+        return member
+    }
+
     @Test
     fun activate() {
         // GIVEN
@@ -203,7 +216,7 @@ class MemberRegisterTest(
     }
 
     @Test
-    fun updateInfoFail() {
+    fun `updateInfoFail Not Active`() {
         // GIVEN
         val newNickname = "Smith"
         val newProfileAddress = "address123"
@@ -226,5 +239,47 @@ class MemberRegisterTest(
             )
         }
         assertEquals("Active 상태가 아닙니다.", exception.message)
+    }
+
+    @Test
+    fun `updateInfoFail Duplicate profile address`() {
+        // GIVEN
+        val newNickname = "Smith"
+        val duplicateProfileAddress = "address123"
+        val newIntroduction = "hello there"
+
+        val member = registerMember()
+        val member2 = registerMember("blake@gmail.com")
+
+        memberRegister.activate(member.id!!)
+        memberRegister.activate(member2.id!!)
+
+        entityManager.flush()
+        entityManager.clear()
+
+        memberRegister.updateInfo(
+            member.id!!,
+            MemberInfoUpdateRequest(
+                newNickname,
+                duplicateProfileAddress,
+                newIntroduction
+            )
+        )
+
+        // WHEN & THEN
+        val exception = assertThrows<DuplicateProfileAddressException> {
+            memberRegister.updateInfo(
+                member2.id!!,
+                MemberInfoUpdateRequest(
+                    "NewNickname",
+                    duplicateProfileAddress,
+                    "hello there"
+                )
+            )
+        }
+        assertEquals(
+            "이미 존재하는 프로필 주소입니다. profile_address : {$duplicateProfileAddress}",
+            exception.message
+        )
     }
 }

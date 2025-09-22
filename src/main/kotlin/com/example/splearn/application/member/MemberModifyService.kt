@@ -55,6 +55,9 @@ class MemberModifyService(
     override fun updateInfo(memberId: Long, memberInfoUpdateRequest: MemberInfoUpdateRequest,
     ): Member {
         val member = memberFinder.find(memberId)
+
+        checkDuplicateProfile(member, memberInfoUpdateRequest.profileAddress)
+
         member.updateInfo(memberInfoUpdateRequest)
         return memberRepository.save(member)
     }
@@ -62,6 +65,15 @@ class MemberModifyService(
     private fun checkDuplicateEmail(email: Email) {
         if (memberRepository.findByEmail(email) != null) {
             throw DuplicateEmailException("이미 사용중인 이메일입니다. email={$email.address}")
+        }
+    }
+
+    private fun checkDuplicateProfile(member: Member, profileAddress: String?) {
+        if (profileAddress.isNullOrEmpty()) return
+        if (member.detail.profile?.address.equals(profileAddress)) return
+
+        if(memberRepository.findByProfile(Profile.create(profileAddress)) != null) {
+            throw DuplicateProfileAddressException("이미 존재하는 프로필 주소입니다. profile_address : {$profileAddress}")
         }
     }
 }

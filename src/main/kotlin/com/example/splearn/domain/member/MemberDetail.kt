@@ -31,9 +31,13 @@ class MemberDetail protected constructor(): AbstractEntity() {
         this.deactivatedAt = LocalDateTime.now()
     }
 
-    fun setProfileInfo(profile: String?, introduction: String?) {
-        profile?.let { this.profile = Profile.create(profile) }
-        introduction?.let { this.introduction = introduction }
+    fun setProfileInfo(profileAddress: String?, introduction: String?) {
+        if (!profileAddress.isNullOrEmpty()) {
+            this.profile = Profile.create(profileAddress)
+        }
+        if (!introduction.isNullOrEmpty()) {
+            this.introduction = introduction
+        }
     }
 
     companion object {
