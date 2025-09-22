@@ -1,11 +1,11 @@
-package com.example.splearn.application
+package com.example.splearn.application.member
 
 import com.example.splearn.TestUtils.Companion.generateRandomString
 import com.example.splearn.application.member.provided.MemberRegister
-import com.example.splearn.application.required.SplearnTestConfig
-import com.example.splearn.domain.MemberFixture
-import com.example.splearn.domain.MemberFixture.Companion.DEFAULT_PASSWORD
-import com.example.splearn.domain.MemberFixture.Companion.createMemberInfoUpdateRequest
+import com.example.splearn.application.member.required.SplearnTestConfig
+import com.example.splearn.domain.member.MemberFixture
+import com.example.splearn.domain.member.MemberFixture.Companion.DEFAULT_PASSWORD
+import com.example.splearn.domain.member.MemberFixture.Companion.createMemberInfoUpdateRequest
 import com.example.splearn.domain.member.*
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.*
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
 
 @SpringBootTest
 @Transactional

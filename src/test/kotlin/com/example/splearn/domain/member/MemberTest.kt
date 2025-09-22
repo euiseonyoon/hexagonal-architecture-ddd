@@ -1,12 +1,8 @@
-package com.example.splearn.domain
+package com.example.splearn.domain.member
 
-import com.example.splearn.domain.MemberFixture.Companion.DEFAULT_PASSWORD
-import com.example.splearn.domain.MemberFixture.Companion.createMemberRegisterRequest
-import com.example.splearn.domain.MemberFixture.Companion.createPasswordEncoder
-import com.example.splearn.domain.member.Member
-import com.example.splearn.domain.member.MemberInfoUpdateRequest
-import com.example.splearn.domain.member.MemberStatus
-import com.example.splearn.domain.member.PasswordEncoder
+import com.example.splearn.domain.member.MemberFixture.Companion.DEFAULT_PASSWORD
+import com.example.splearn.domain.member.MemberFixture.Companion.createMemberRegisterRequest
+import com.example.splearn.domain.member.MemberFixture.Companion.createPasswordEncoder
 import org.junit.jupiter.api.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource

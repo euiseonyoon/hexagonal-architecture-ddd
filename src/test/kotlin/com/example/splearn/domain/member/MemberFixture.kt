@@ -1,8 +1,4 @@
-package com.example.splearn.domain
-
-import com.example.splearn.domain.member.MemberInfoUpdateRequest
-import com.example.splearn.domain.member.MemberRegisterRequest
-import com.example.splearn.domain.member.PasswordEncoder
+package com.example.splearn.domain.member
 
 class MemberFixture {
     companion object {

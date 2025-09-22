@@ -1,8 +1,7 @@
-package com.example.splearn.application.required
+package com.example.splearn.application.member.required
 
-import com.example.splearn.application.member.required.EmailSender
 import com.example.splearn.domain.shared.Email
-import com.example.splearn.domain.MemberFixture
+import com.example.splearn.domain.member.MemberFixture
 import com.example.splearn.domain.member.PasswordEncoder
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean

@@ -1,10 +1,10 @@
-package com.example.splearn.application
+package com.example.splearn.application.member
 
 import com.example.splearn.application.member.provided.MemberFinder
 import com.example.splearn.application.member.provided.MemberRegister
-import com.example.splearn.application.required.SplearnTestConfig
-import com.example.splearn.domain.*
+import com.example.splearn.application.member.required.SplearnTestConfig
 import com.example.splearn.domain.member.Member
+import com.example.splearn.domain.member.MemberFixture
 import com.example.splearn.domain.member.MemberNotFoundException
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional

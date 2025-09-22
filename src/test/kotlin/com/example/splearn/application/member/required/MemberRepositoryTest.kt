@@ -1,9 +1,8 @@
-package com.example.splearn.application.required
+package com.example.splearn.application.member.required
 
-import com.example.splearn.application.member.required.MemberRepository
 import com.example.splearn.domain.member.Member
-import com.example.splearn.domain.MemberFixture.Companion.createMemberRegisterRequest
-import com.example.splearn.domain.MemberFixture.Companion.createPasswordEncoder
+import com.example.splearn.domain.member.MemberFixture.Companion.createMemberRegisterRequest
+import com.example.splearn.domain.member.MemberFixture.Companion.createPasswordEncoder
 import jakarta.persistence.EntityManager
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
