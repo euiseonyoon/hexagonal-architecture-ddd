@@ -9,7 +9,7 @@ class Member protected constructor() : AbstractEntity() {
     lateinit var email: Email
         protected set
 
-    lateinit var nickName: String
+    lateinit var nickname: String
         protected set
 
     lateinit var passwordHash: String
@@ -39,7 +39,7 @@ class Member protected constructor() : AbstractEntity() {
     }
 
     fun changeNickname(nickname: String) {
-        this.nickName = nickname
+        this.nickname = nickname
     }
 
     fun changePassword(password: String, passwordEncoder: PasswordEncoder) {
@@ -51,7 +51,7 @@ class Member protected constructor() : AbstractEntity() {
         fun register(registerRequest: MemberRegisterRequest, passwordEncoder: PasswordEncoder): Member {
             val member = Member()
             member.email = Email(registerRequest.email)
-            member.nickName = registerRequest.nickname
+            member.nickname = registerRequest.nickname
             member.passwordHash = passwordEncoder.encode(registerRequest.password)
             member.status = MemberStatus.PENDING
 

@@ -86,6 +86,6 @@ class MemberTest {
         member.changeNickname(newNickname)
 
         // THEN
-        assertEquals(newNickname, member.nickName)
+        assertEquals(newNickname, member.nickname)
     }
 }
