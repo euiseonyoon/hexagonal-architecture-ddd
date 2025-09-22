@@ -12,18 +12,18 @@ class Member protected constructor() {
     @Embedded
     @NaturalId
     lateinit var email: Email
-        internal set
+        protected set
 
     // change to internal : JPA requires a way to set the value of this property
     lateinit var nickName: String
-        internal set
+        protected set
 
     lateinit var passwordHash: String
-        internal set
+        protected set
 
     @Enumerated(value = EnumType.STRING)
     lateinit var status: MemberStatus
-        internal set
+        protected set
 
     fun isActive(): Boolean = this.status == MemberStatus.ACTIVE
 
