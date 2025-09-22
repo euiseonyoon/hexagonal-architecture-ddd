@@ -4,27 +4,17 @@ import jakarta.persistence.*
 import org.hibernate.annotations.NaturalId
 
 @Entity
-@Table(
-    uniqueConstraints = [
-        UniqueConstraint(name = "UK_MEMBER_EMAIL_ADDRESS", columnNames = ["email_address"])
-    ]
-)
 class Member protected constructor() : AbstractEntity() {
-    @Embedded
     @NaturalId
     lateinit var email: Email
         protected set
 
-    @Column(length = 100, nullable = false)
     lateinit var nickName: String
         protected set
 
-    @Column(length = 200, nullable = false)
     lateinit var passwordHash: String
         protected set
 
-    @Column(length = 50, nullable = false)
-    @Enumerated(value = EnumType.STRING)
     lateinit var status: MemberStatus
         protected set
 
