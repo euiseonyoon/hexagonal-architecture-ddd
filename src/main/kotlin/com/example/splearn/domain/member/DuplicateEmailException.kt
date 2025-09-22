@@ -1,4 +1,4 @@
 package com.example.splearn.domain.member
 
-class DuplicateEmailException(message: String): RuntimeException() {
+class DuplicateEmailException(message: String): RuntimeException(message) {
 }
