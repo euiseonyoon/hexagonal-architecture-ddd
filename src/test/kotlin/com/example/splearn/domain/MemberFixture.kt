@@ -1,5 +1,8 @@
 package com.example.splearn.domain
 
+import com.example.splearn.domain.member.MemberRegisterRequest
+import com.example.splearn.domain.member.PasswordEncoder
+
 class MemberFixture {
     companion object {
         const val DEFAULT_PASSWORD = "secret"

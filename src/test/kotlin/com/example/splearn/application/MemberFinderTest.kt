@@ -1,20 +1,19 @@
 package com.example.splearn.application
 
-import com.example.splearn.TestUtils.Companion.generateRandomString
-import com.example.splearn.application.provided.MemberFinder
-import com.example.splearn.application.provided.MemberRegister
+import com.example.splearn.application.member.provided.MemberFinder
+import com.example.splearn.application.member.provided.MemberRegister
 import com.example.splearn.application.required.SplearnTestConfig
 import com.example.splearn.domain.*
+import com.example.splearn.domain.member.Member
+import com.example.splearn.domain.member.MemberNotFoundException
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
-import jakarta.validation.ConstraintViolationException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
 
 @SpringBootTest
 @Transactional

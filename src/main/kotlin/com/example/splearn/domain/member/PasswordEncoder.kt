@@ -1,4 +1,4 @@
-package com.example.splearn.domain
+package com.example.splearn.domain.member
 
 interface PasswordEncoder {
     fun encode(password: String): String

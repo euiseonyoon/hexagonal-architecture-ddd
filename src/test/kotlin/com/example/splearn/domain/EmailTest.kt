@@ -1,5 +1,6 @@
 package com.example.splearn.domain
 
+import com.example.splearn.domain.shared.Email
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows

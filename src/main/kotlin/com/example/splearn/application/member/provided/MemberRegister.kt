@@ -1,7 +1,7 @@
-package com.example.splearn.application.provided
+package com.example.splearn.application.member.provided
 
-import com.example.splearn.domain.Member
-import com.example.splearn.domain.MemberRegisterRequest
+import com.example.splearn.domain.member.Member
+import com.example.splearn.domain.member.MemberRegisterRequest
 import jakarta.validation.Valid
 
 /**

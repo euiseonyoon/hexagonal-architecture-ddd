@@ -1,11 +1,11 @@
 package com.example.splearn.adapters.security
 
-import com.example.splearn.domain.PasswordEncoder
+import com.example.splearn.domain.member.PasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
-class SecurePasswordEncoder : PasswordEncoder{
+class SecurePasswordEncoder : PasswordEncoder {
     private val bCryptPasswordEncoder = BCryptPasswordEncoder()
 
     override fun encode(password: String): String {

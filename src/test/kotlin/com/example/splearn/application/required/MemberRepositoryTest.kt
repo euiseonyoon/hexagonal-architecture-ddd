@@ -1,6 +1,7 @@
 package com.example.splearn.application.required
 
-import com.example.splearn.domain.Member
+import com.example.splearn.application.member.required.MemberRepository
+import com.example.splearn.domain.member.Member
 import com.example.splearn.domain.MemberFixture.Companion.createMemberResiterRequest
 import com.example.splearn.domain.MemberFixture.Companion.createPasswordEncoder
 import jakarta.persistence.EntityManager

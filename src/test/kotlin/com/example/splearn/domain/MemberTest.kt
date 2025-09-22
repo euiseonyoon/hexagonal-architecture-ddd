@@ -3,6 +3,9 @@ package com.example.splearn.domain
 import com.example.splearn.domain.MemberFixture.Companion.DEFAULT_PASSWORD
 import com.example.splearn.domain.MemberFixture.Companion.createMemberResiterRequest
 import com.example.splearn.domain.MemberFixture.Companion.createPasswordEncoder
+import com.example.splearn.domain.member.Member
+import com.example.splearn.domain.member.MemberStatus
+import com.example.splearn.domain.member.PasswordEncoder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow

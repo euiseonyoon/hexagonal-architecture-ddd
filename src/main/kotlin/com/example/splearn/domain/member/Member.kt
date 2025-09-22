@@ -1,5 +1,7 @@
-package com.example.splearn.domain
+package com.example.splearn.domain.member
 
+import com.example.splearn.domain.AbstractEntity
+import com.example.splearn.domain.shared.Email
 import jakarta.persistence.*
 import org.hibernate.annotations.NaturalId
 

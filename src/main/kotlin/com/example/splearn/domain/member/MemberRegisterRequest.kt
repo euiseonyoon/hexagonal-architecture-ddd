@@ -1,4 +1,4 @@
-package com.example.splearn.domain
+package com.example.splearn.domain.member
 
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Size
