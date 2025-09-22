@@ -3,11 +3,8 @@ package com.example.splearn.application
 import com.example.splearn.TestUtils.Companion.generateRandomString
 import com.example.splearn.application.member.provided.MemberRegister
 import com.example.splearn.application.required.SplearnTestConfig
-import com.example.splearn.domain.member.DuplicateEmailException
 import com.example.splearn.domain.MemberFixture
-import com.example.splearn.domain.member.Member
-import com.example.splearn.domain.member.MemberRegisterRequest
-import com.example.splearn.domain.member.MemberStatus
+import com.example.splearn.domain.member.*
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import jakarta.validation.ConstraintViolationException
@@ -142,5 +139,92 @@ class MemberRegisterTest(
         assertNotNull(result.message)
         assertEquals("Pending 상태가 아닙니다.", result.message!!)
     }
-}
 
+    @Test
+    fun deactivate() {
+        // GIVEN
+        val member = registerMember()
+        assertNotNull(member.id)
+        memberRegister.activate(member.id!!)
+
+        // WHEN
+        memberRegister.deactivate(member.id!!)
+        entityManager.flush()
+        entityManager.clear()
+
+        // THEN
+        assertEquals(MemberStatus.DEACTIVATED, member.status)
+        assertNotNull(member.detail.deactivatedAt)
+    }
+
+    @Test
+    fun deactivateFail() {
+        // GIVEN
+        val member = registerMember()
+        assertNotNull(member.id)
+        entityManager.flush()
+        entityManager.clear()
+
+        // WHEN & THEN
+        val exception = assertThrows<IllegalArgumentException> {
+            memberRegister.deactivate(member.id!!)
+        }
+        assertEquals("Active 상태가 아닙니다.", exception.message!!)
+    }
+
+    @Test
+    fun updateInfo() {
+        // GIVEN
+        val newNickname = "Smith"
+        val newProfileAddress = "address123"
+        val newIntroduction = "hello there"
+
+        val member = registerMember()
+        assertNotNull(member.id)
+        memberRegister.activate(member.id!!)
+
+        entityManager.flush()
+        entityManager.clear()
+
+        // WHEN
+        val updatedMember = memberRegister.updateInfo(
+            member.id!!,
+            MemberInfoUpdateRequest(
+                newNickname,
+                newProfileAddress,
+                newIntroduction
+            )
+        )
+
+        // THEN
+        assertEquals(newNickname, updatedMember.nickname)
+        assertEquals(newProfileAddress, updatedMember.detail.profile?.address)
+        assertEquals(newIntroduction, updatedMember.detail.introduction)
+    }
+
+    @Test
+    fun updateInfoFail() {
+        // GIVEN
+        val newNickname = "Smith"
+        val newProfileAddress = "address123"
+        val newIntroduction = "hello there"
+
+        val member = registerMember()
+        assertNotNull(member.id)
+        entityManager.flush()
+        entityManager.clear()
+
+        // WHEN & THEN
+        val exception = assertThrows<IllegalArgumentException> {
+            memberRegister.updateInfo(
+                member.id!!,
+                MemberInfoUpdateRequest(
+                    newNickname,
+                    newProfileAddress,
+                    newIntroduction
+                )
+            )
+        }
+        assertEquals("Active 상태가 아닙니다.", exception.message)
+    }
+}

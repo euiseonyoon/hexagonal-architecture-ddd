@@ -98,6 +98,7 @@ class MemberTest {
             profileAddress = profileAddress,
             introduction = introduction,
         )
+        member.activate()
 
         // WHEN
         member.updateInfo(memberInfoUpdateRequest)

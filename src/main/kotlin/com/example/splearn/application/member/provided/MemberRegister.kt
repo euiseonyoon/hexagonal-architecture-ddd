@@ -1,6 +1,7 @@
 package com.example.splearn.application.member.provided
 
 import com.example.splearn.domain.member.Member
+import com.example.splearn.domain.member.MemberInfoUpdateRequest
 import com.example.splearn.domain.member.MemberRegisterRequest
 import jakarta.validation.Valid
 
@@ -11,4 +12,8 @@ interface MemberRegister {
     fun register(@Valid registerRequest: MemberRegisterRequest): Member
 
     fun activate(memberId: Long): Member
+
+    fun deactivate(memberId: Long): Member
+
+    fun updateInfo(memberId: Long, memberInfoUpdateRequest: MemberInfoUpdateRequest): Member
 }

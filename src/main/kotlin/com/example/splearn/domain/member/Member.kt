@@ -47,6 +47,9 @@ class Member protected constructor() : AbstractEntity() {
     }
 
     fun updateInfo(updateRequest: MemberInfoUpdateRequest) {
+        require(this.status == MemberStatus.ACTIVE) {
+            "Active 상태가 아닙니다."
+        }
         updateRequest.nickname?.let { this.nickname = it }
         this.detail.setProfileInfo(updateRequest.profileAddress, updateRequest.introduction)
     }
