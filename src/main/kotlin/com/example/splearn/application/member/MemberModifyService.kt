@@ -64,7 +64,7 @@ class MemberModifyService(
 
     private fun checkDuplicateEmail(email: Email) {
         if (memberRepository.findByEmail(email) != null) {
-            throw DuplicateEmailException("이미 사용중인 이메일입니다. email={$email.address}")
+            throw DuplicateEmailException("이미 사용중인 이메일입니다. email={${email.address}}")
         }
     }
 
