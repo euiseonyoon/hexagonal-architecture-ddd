@@ -1,5 +1,8 @@
 package com.example.splearn
 
+import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.assertj.MockMvcTester
+import org.springframework.test.web.servlet.assertj.MvcTestResult
 import kotlin.random.Random
 
 class TestUtils {
@@ -14,6 +17,12 @@ class TestUtils {
             }
 
             return randomString.toString()
+        }
+
+        @JvmStatic
+        fun makePostCall(mockMvcTester: MockMvcTester, uri: String, requestJson: String): MvcTestResult {
+            return mockMvcTester.post().uri(uri).contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson).exchange()
         }
     }
 }

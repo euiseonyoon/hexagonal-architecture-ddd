@@ -1,5 +1,8 @@
 package com.example.splearn.domain.member
 
+import com.example.splearn.domain.member.Member.Companion.register
+import org.springframework.test.util.ReflectionTestUtils
+
 class MemberFixture {
     companion object {
         const val DEFAULT_PASSWORD = "secret"
@@ -7,6 +10,13 @@ class MemberFixture {
         @JvmStatic
         fun createMemberRegisterRequest() = MemberRegisterRequest(
             "test@gmail.com",
+            "Adam",
+            DEFAULT_PASSWORD,
+        )
+
+        @JvmStatic
+        fun createMemberRegisterRequest(email: String) = MemberRegisterRequest(
+            email,
             "Adam",
             DEFAULT_PASSWORD,
         )
@@ -28,5 +38,12 @@ class MemberFixture {
             profileAddress,
             "this is introduction."
         )
+
+        @JvmStatic
+        fun createMember(id: Long): Member {
+            val member = register(createMemberRegisterRequest(), createPasswordEncoder())
+            ReflectionTestUtils.setField(member, "id", id)
+            return member
+        }
     }
 }

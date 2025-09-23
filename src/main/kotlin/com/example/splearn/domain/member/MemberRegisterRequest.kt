@@ -2,7 +2,9 @@ package com.example.splearn.domain.member
 
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Size
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MemberRegisterRequest(
     @field:Email
     val email: String,
